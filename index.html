@@ -3,47 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raul Abakarov </title>
+    <title>Raul Abakarov</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
             background-color: #000000;
             color: #00ff00;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden; 
+            align-items: flex-start; /* Allow scrolling */
+            min-height: 100vh; 
+            box-sizing: border-box;
+            overflow-y: auto; /* Enable scrolling */
         }
-        
-       
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
         footer {
             margin-top: 30px;
             font-size: 0.8em;
             color: #00ff00;
         }
-        
+
         a:link, a:visited {
             color: #00ff00;
         }
-        
-        .hover:hover{color: white;}
-        
-        h2, h1{color: white;}
+
+        .hover:hover { 
+            color: white; 
+        }
+
+        h1, h2 {
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            ul {
+                padding-left: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-       <div class="heading">
-        <h1 class="hover">Raul Abakarov</h1>
-        <h2 style="color:white;">Data Scientist | Machine Learning Engineer | AI Engineer</h2>
-       </div>
+        <div class="heading">
+            <h1 class="hover">Raul Abakarov</h1>
+            <h2>Data Scientist | Machine Learning Engineer | AI Engineer</h2>
+        </div>
+
         <div class="summary">
             <p>Results-driven Data Scientist, Machine Learning Engineer, and AI Engineer with certifications from Codecademy and other well-known organizations. Strong expertise in building and deploying machine learning models and AI-driven solutions. Confident in delivering innovative and high-impact projects, with a focus on efficiency and performance. Trusted to excel in dynamic and challenging environments despite limited years of experience.</p>
         </div>
-      
 
         <div>
             <h2 class="hover">Skills</h2>
@@ -67,11 +100,10 @@
         </div>
         
         <div class="social">
-        	<h2 class="hover">Social Media Accounts</h2>
-        	<ul>
-        		<li><a href="https://www.linkedin.com/in/raulabakarov">LinkedIn</a></li>
-        		
-        	</ul>
+            <h2 class="hover">Social Media Accounts</h2>
+            <ul>
+                <li><a href="https://www.linkedin.com/in/raulabakarov">LinkedIn</a></li>
+            </ul>
         </div>
 
         <footer>
