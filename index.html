@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raul Abakarov</title>
+    <title>Terminal Website</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -31,6 +31,11 @@
 
         a:link, a:visited {
             color: #00ff00;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: white;
         }
 
         .hover:hover {
@@ -60,6 +65,23 @@
             color: #00ff00;
             text-align: center;
             cursor: pointer;
+        }
+
+        /* Typing animation */
+        .typing {
+            white-space: pre-wrap; /* Preserve line breaks */
+            overflow: hidden;
+            border-right: 0.15em solid #00ff00;
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: #00ff00;
+            }
         }
 
         @media (max-width: 600px) {
@@ -94,41 +116,12 @@
 
     <!-- Main content -->
     <div class="container">
-        <div class="heading">
-            <h1 class="hover">Raul Abakarov</h1>
-            <h2>Data Scientist | Machine Learning Engineer | AI Engineer</h2>
+        <div id="terminal-output">
+            <p class="typing" id="typed-text"></p>
         </div>
 
-        <div class="summary">
-            <p>Results-driven Data Scientist, Machine Learning Engineer, and AI Engineer with certifications from Codecademy and other well-known organizations. Strong expertise in building and deploying machine learning models and AI-driven solutions. Confident in delivering innovative and high-impact projects, with a focus on efficiency and performance. Trusted to excel in dynamic and challenging environments despite limited years of experience.</p>
-        </div>
-
-        <div>
-            <h2 class="hover">Skills</h2>
-            <ul>
-                <li>Data Science</li>
-                <li>Machine Learning</li>
-                <li>Artificial Intelligence</li>
-                <li>Model Deployment</li>
-                <li>Python Programming</li>
-                <li>Advanced Data Analytics</li>
-                <li>Problem Solving</li>
-            </ul>
-        </div>
-
-        <div class="certifications">
-            <h2 class="hover">Certifications</h2>
-            <ul>
-                <li><a href="https://www.codecademy.com/profiles/lionn777/certificates/8e9e59de3f924b33ad2371faf667129b">Codecademy Professional Certification</a></li>
-                <li>Additional certifications from leading organizations</li>
-            </ul>
-        </div>
-
-        <div class="social">
-            <h2 class="hover">Social Media Accounts</h2>
-            <ul>
-                <li><a href="https://www.linkedin.com/in/raulabakarov">LinkedIn</a></li>
-            </ul>
+        <div class="input-line" style="display: none;">
+            <span id="prompt">➜ ~ </span><span id="user-input"></span><span class="typing"></span>
         </div>
 
         <footer>
@@ -137,11 +130,63 @@
     </div>
 
     <script>
-        // Function to hide the overlay and show the main content
+        const content = [
+            "Welcome to my website!",
+            "\nI'm Raul Abakarov.",
+            "Data Scientist | Machine Learning Engineer | AI Engineer",
+            "\n\nResults-driven, strong expertise in building and deploying machine learning models and AI-driven solutions.",
+            "Confident in delivering innovative, high-impact projects focused on efficiency and performance.",
+            "Trusted to excel in dynamic and challenging environments despite limited years of experience.",
+            "\n\nSkills: \n- Data Science \n- Machine Learning \n- Artificial Intelligence \n- Model Deployment \n- Python Programming \n- Advanced Data Analytics \n- Problem Solving.",
+            "\n\nCertifications: \n- Codecademy Professional Certification     ------- write 'certification' to follow the link. \n- Other additional certifications from leading organizations ", 
+            "\n\nSocial Media: \n- LinkedIn     ------- write 'linkedin' to see the profile.",
+            "\n\nThis is the end of the information. Feel free to explore more."
+        ];
+
+        let currentIndex = 0;
+        let currentText = '';
+        let currentCharIndex = 0;
+        const typingSpeed = 25;  // Quadruple the typing speed
+        const pauseBetweenLines = 500; // Slightly reduced pause between typing lines
+
         function showContent() {
             document.querySelector('.overlay').style.display = 'none';
             document.querySelector('.container').style.display = 'block';
+            typeText();
         }
+
+        function typeText() {
+            if (currentIndex < content.length) {
+                if (currentCharIndex < content[currentIndex].length) {
+                    currentText += content[currentIndex].charAt(currentCharIndex);
+                    document.getElementById("typed-text").textContent = currentText;
+                    currentCharIndex++;
+                    setTimeout(typeText, typingSpeed);
+                } else {
+                    currentText += '\n\n';  // Add line breaks after each section
+                    currentIndex++;
+                    currentCharIndex = 0;
+                    setTimeout(typeText, pauseBetweenLines);  // Shorter pause between lines
+                }
+            } else {
+                document.querySelector('.input-line').style.display = 'block';
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const userInput = document.getElementById('user-input');
+            if (event.key === 'Enter') {
+                const command = userInput.textContent.trim().toLowerCase();
+                if (command === 'certification') {
+                    window.open('https://www.codecademy.com/profiles/lionn777/certificates/8e9e59de3f924b33ad2371faf667129b', '_blank');
+                } else if (command === 'linkedin') {
+                    window.open('https://www.linkedin.com/in/raulabakarov', '_blank');
+                }
+                userInput.textContent = '';
+            } else {
+                userInput.textContent += event.key;
+            }
+        });
     </script>
 </body>
 </html>
