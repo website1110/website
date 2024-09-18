@@ -84,6 +84,7 @@
             }
         }
 
+        /* Style for mobile and tablet screens */
         @media (max-width: 600px) {
             body {
                 padding: 10px;
@@ -95,15 +96,90 @@
             }
 
             h1 {
-                font-size: 1.8em;
+                font-size: 1.5em;
             }
 
             h2 {
-                font-size: 1.4em;
+                font-size: 1.2em;
             }
 
-            ul {
-                padding-left: 20px;
+            .overlay h1 {
+                font-size: 1.5em;
+            }
+
+            footer {
+                font-size: 0.7em;
+            }
+
+            .input-line {
+                display: none; /* Remove command line for mobile */
+            }
+
+            .command-buttons {
+                margin-top: 20px;
+                display: none; /* Initially hidden, shown after typing finishes */
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .command-buttons button {
+                background-color: #000000;
+                color: #00ff00;
+                border: 2px solid #00ff00;
+                padding: 10px 20px;
+                font-size: 1.1em;
+                cursor: pointer;
+                border-radius: 10px;
+                transition: background-color 0.4s, transform 0.4s, color 0.4s;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .command-buttons button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background-color: #00ff00;
+                transition: left 0.4s ease;
+                z-index: 1;
+            }
+
+            .command-buttons button:hover::before {
+                left: 0;
+            }
+
+            .command-buttons button span {
+                position: relative;
+                z-index: 2;
+                transition: transform 0.4s;
+            }
+
+            .command-buttons button:hover span {
+                transform: translateX(10px); /* Text slide effect */
+            }
+
+            .command-buttons button:hover {
+                color: #000000;
+            }
+
+            .command-buttons button:hover::before {
+                left: 0;
+                background-color: #00ff00;
+            }
+        }
+
+        /* Styles for larger screens */
+        @media (min-width: 601px) {
+            .command-buttons {
+                display: none; /* Hide buttons on larger screens */
+            }
+
+            .input-line {
+                display: block; /* Keep the command line on larger screens */
             }
         }
     </style>
@@ -120,8 +196,15 @@
             <p class="typing" id="typed-text"></p>
         </div>
 
-        <div class="input-line" style="display: none;">
+        <!-- Command line for larger screens -->
+        <div class="input-line">
             <span id="prompt">➜ ~ </span><span id="user-input"></span><span class="typing"></span>
+        </div>
+
+        <!-- Command buttons for mobile users -->
+        <div class="command-buttons" id="command-buttons">
+            <button onclick="openLink('certification')"><span>Certification</span></button>
+            <button onclick="openLink('linkedin')"><span>LinkedIn</span></button>
         </div>
 
         <footer>
@@ -130,7 +213,7 @@
     </div>
 
     <script>
-        const content = [
+        const contentDesktop = [
             "Welcome to my website!",
             "\nI'm Raul Abakarov.",
             "Data Scientist | Machine Learning Engineer | AI Engineer",
@@ -138,16 +221,31 @@
             "Confident in delivering innovative, high-impact projects focused on efficiency and performance.",
             "Trusted to excel in dynamic and challenging environments despite limited years of experience.",
             "\n\nSkills: \n- Data Science \n- Machine Learning \n- Artificial Intelligence \n- Model Deployment \n- Python Programming \n- Advanced Data Analytics \n- Problem Solving.",
-            "\n\nCertifications: \n- Codecademy Professional Certification     ------- write 'certification' to follow the link. \n- Other additional certifications from leading organizations ", 
-            "\n\nSocial Media: \n- LinkedIn     ------- write 'linkedin' to see the profile.",
+            "\n\nCertifications: \n- Codecademy Professional Certification     ----- write 'certification' to follow the link.\n- Other additional certifications from leading organizations.",
+            "\n\nSocial Media: \n- LinkedIn     ----- write 'linkedin' to follow the link.",
             "\n\nThis is the end of the information. Feel free to explore more."
         ];
+
+        const contentMobile = [
+            "Welcome to my website!",
+            "\nI'm Raul Abakarov.",
+            "Data Scientist | Machine Learning Engineer | AI Engineer",
+            "\n\nResults-driven, strong expertise in building and deploying machine learning models and AI-driven solutions.",
+            "Confident in delivering innovative, high-impact projects focused on efficiency and performance.",
+            "Trusted to excel in dynamic and challenging environments despite limited years of experience.",
+            "\n\nSkills: \n- Data Science \n- Machine Learning \n- Artificial Intelligence \n- Model Deployment \n- Python Programming \n- Advanced Data Analytics \n- Problem Solving.",
+            "\n\nCertifications: \n- Codecademy Professional Certification\n- Other additional certifications from leading organizations.",
+            "\n\nSocial Media: \n- LinkedIn",
+            "\n\nThis is the end of the information. Feel free to explore more."
+        ];
+
+        let content = window.innerWidth <= 600 ? contentMobile : contentDesktop;
 
         let currentIndex = 0;
         let currentText = '';
         let currentCharIndex = 0;
-        const typingSpeed = 25;  // Quadruple the typing speed
-        const pauseBetweenLines = 500; // Slightly reduced pause between typing lines
+        const typingSpeed = 25;
+        const pauseBetweenLines = 500;
 
         function showContent() {
             document.querySelector('.overlay').style.display = 'none';
@@ -163,13 +261,21 @@
                     currentCharIndex++;
                     setTimeout(typeText, typingSpeed);
                 } else {
-                    currentText += '\n\n';  // Add line breaks after each section
+                    currentText += '\n\n';
                     currentIndex++;
                     currentCharIndex = 0;
-                    setTimeout(typeText, pauseBetweenLines);  // Shorter pause between lines
+                    setTimeout(typeText, pauseBetweenLines);
                 }
             } else {
-                document.querySelector('.input-line').style.display = 'block';
+                document.getElementById('command-buttons').style.display = window.innerWidth <= 600 ? 'flex' : 'none';
+            }
+        }
+
+        function openLink(command) {
+            if (command === 'certification') {
+                window.open('https://www.codecademy.com/profiles/lionn777/certificates/8e9e59de3f924b33ad2371faf667129b', '_blank');
+            } else if (command === 'linkedin') {
+                window.open('https://www.linkedin.com/in/raulabakarov', '_blank');
             }
         }
 
@@ -177,13 +283,11 @@
             const userInput = document.getElementById('user-input');
             if (event.key === 'Enter') {
                 const command = userInput.textContent.trim().toLowerCase();
-                if (command === 'certification') {
-                    window.open('https://www.codecademy.com/profiles/lionn777/certificates/8e9e59de3f924b33ad2371faf667129b', '_blank');
-                } else if (command === 'linkedin') {
-                    window.open('https://www.linkedin.com/in/raulabakarov', '_blank');
-                }
+                openLink(command);
                 userInput.textContent = '';
-            } else {
+            } else if (event.key === 'Backspace') {
+                userInput.textContent = userInput.textContent.slice(0, -1);
+            } else if (event.key.length === 1) {
                 userInput.textContent += event.key;
             }
         });
